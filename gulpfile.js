@@ -13,9 +13,9 @@ var react = require('gulp-react');
 
 var config = {
   env: 'development',
-  src: './asset/src',
-  dest: './asset/public',
-  destServer: './asset/server'
+  src: './asset',
+  dest: './public',
+  destServer: './component'
 };
 
 gulp.task('jade', function () {
@@ -73,20 +73,21 @@ gulp.task('react-client', function() {
     opt.debug = false;
   }
   return browserify(opt)
-  .transform('reactify')
-  .transform('uglifyify')
-  .bundle()
-  .pipe
-    (source(
-      'bundle.js'
+    .transform('reactify')
+    .transform('uglifyify')
+    .bundle()
+    .pipe(
+      source('bundle.js')
     )
-  )
-  .pipe(gulp.dest(config.dest));
+    .pipe(gulp.dest(config.dest))
+    .on('error', function(err){
+      console.log(err);
+    });
 });
 
 gulp.task('react-server', function () {
   return gulp.src([
-      config.src + '/js/*.jsx',
+      config.src + '/js/server.jsx',
       config.src + '/js/**/*.jsx',
       config.src + '/js/**/**/*.jsx'
     ])
