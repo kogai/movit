@@ -9,14 +9,21 @@ var pngmin = require('gulp-pngmin');
 var mifify = require('gulp-minify-css');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
+var react = require('gulp-react');
 
 var config = {
+  env: 'development',
   src: './asset/src',
-  dest: './asset/public'
+  dest: './asset/public',
+  destServer: './asset/server'
 };
 
 gulp.task('jade', function () {
   'use strict';
+  var opt = {};
+  if(config.env === 'development'){
+    opt.pretty = true;
+  }
   return (
     gulp.src([
   		config.src + '/jade/!(_)*.jade',
@@ -29,7 +36,7 @@ gulp.task('jade', function () {
       })
     )
     .pipe(newer(config.dest))
-    .pipe(jade())
+    .pipe(jade(opt))
     .pipe(
       gulp.dest(config.dest)
     )
@@ -54,29 +61,40 @@ gulp.task('sass', function () {
   )
 });
 
-var browserifyRegister = function (entryPoint) {
-  browserify({
+gulp.task('react-client', function() {
+  var opt = {
     entries: [
-      config.src + '/js/' + entryPoint + '.jsx',
+      config.src + '/js/client.jsx',
     ],
     extensions: ['.jsx'],
     debug: true
-  })
+  };
+  if(config.env === 'production'){
+    opt.debug = false;
+  }
+  return browserify(opt)
   .transform('reactify')
   .transform('uglifyify')
   .bundle()
   .pipe
     (source(
-      'bundle.' + entryPoint + '.js'
+      'bundle.js'
     )
   )
-  .pipe(gulp.dest(config.dest))
-};
+  .pipe(gulp.dest(config.dest));
+});
 
-['client', 'server'].forEach(function(node){
-  gulp.task('browserify-' + node, function() {
-    return browserifyRegister(node);
-  });
+gulp.task('react-server', function () {
+  return gulp.src([
+      config.src + '/js/*.jsx',
+      config.src + '/js/**/*.jsx',
+      config.src + '/js/**/**/*.jsx'
+    ])
+    .pipe(react())
+    .pipe(gulp.dest(config.destServer + '/'))
+    .on('error', function(err){
+      console.log(err);
+    });
 });
 
 gulp.task('pngmin', function () {
@@ -111,11 +129,17 @@ gulp.task('img', [
   'copy'
 ]);
 
+gulp.task('react', [
+  'react-client',
+  'react-server',
+]);
+
+gulp.task('isProduction', function(){
+  config.env = 'production'
+});
+
 gulp.task('default', [
-  'jade',
-  'sass',
-  'browserify',
-  'img',
+  'compile',
 ], function(){
   'use strict';
   gulp.watch([
@@ -131,11 +155,26 @@ gulp.task('default', [
   gulp.watch([
     config.src + '/js/*.jsx',
     config.src + '/js/**/*.jsx',
-    config.src + '/js/**/**/*.jsx'
-  ], ['browserify']);
+    config.src + '/js/**/**/*.jsx',
+    config.src + '/js/*.js',
+    config.src + '/js/**/*.js',
+    config.src + '/js/**/**/*.js'
+  ], ['react']);
   gulp.watch([
     config.src + '/image/*',
     config.src + '/image/**/*',
     config.src + '/image/**/**/*'
   ], ['img']);
 });
+
+gulp.task('compile', [
+  'jade',
+  'sass',
+  'react',
+  'img',
+]);
+
+gulp.task('build', [
+  'isProduction',
+  'compile'
+]);
