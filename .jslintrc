@@ -32,6 +32,6 @@
   "stupid": false,
   "sub": false,
   "todo": false,
-  "unparam": false,
+  "unparam": true,
   "white": true
 }
