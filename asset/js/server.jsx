@@ -1,6 +1,6 @@
-var React = require('react');
+const React = require('react');
 
-var Index = React.createClass({
+const Index = React.createClass({
   render: function () {
     return (
       <h1>"Hello, browser."</h1>

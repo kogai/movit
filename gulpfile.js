@@ -8,6 +8,10 @@ var sourcemaps = require('gulp-sourcemaps');
 var pngmin = require('gulp-pngmin');
 var mifify = require('gulp-minify-css');
 var browserify = require('browserify');
+var reactify = require('reactify');
+var babelify = require('babelify');
+var uglifyify = require('uglifyify');
+var babel = require('gulp-babel');
 var source = require('vinyl-source-stream');
 var react = require('gulp-react');
 
@@ -73,8 +77,9 @@ gulp.task('react-client', function() {
     opt.debug = false;
   }
   return browserify(opt)
-    .transform('reactify')
-    .transform('uglifyify')
+    .transform(reactify)
+    .transform(babelify)
+    .transform(uglifyify)
     .bundle()
     .pipe(
       source('bundle.js')
@@ -92,6 +97,7 @@ gulp.task('react-server', function () {
       config.src + '/js/**/**/*.jsx'
     ])
     .pipe(react())
+    .pipe(babel())
     .pipe(gulp.dest(config.destServer + '/'))
     .on('error', function(err){
       console.log(err);
