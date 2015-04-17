@@ -1,11 +1,17 @@
 var React = require('react');
-var Index = require('./Index');
 var Router = require('react-router');
 var renderToStringAsync = require('react-async').renderToStringAsync;
 
-module.exports = function (req, reply) {
+var Index = require('./Index');
+var isAuthenticated = require('./util/Helper').isAuthenticated;
+
+module.exports = function (request, reply) {
   Router.run(Index, function (Handler, state) {
-    renderToStringAsync( <Handler />, function ( err, markup ) {
+
+    state.params.user = request.auth.credentials.name;
+    state.params.isAuthenticated = isAuthenticated(request.auth.credentials.name);
+
+    renderToStringAsync( <Handler params={ state.params } />, function ( err, markup ) {
       if(err){
         console.log(err);
       }

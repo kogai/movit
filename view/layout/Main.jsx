@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactAsync = require('react-async');
+var cookie = require('react-cookie');
 
 var Main = React.createClass({
   mixins: [ ReactAsync.Mixin ],
@@ -9,6 +10,7 @@ var Main = React.createClass({
   getInitialStateAsync: function (callback) {
     var _self = this;
     setTimeout(function () {
+      // Handlerのparamsに渡る
       callback(null, { text: 'async is called!'});
     }, 500);
   },
@@ -18,11 +20,14 @@ var Main = React.createClass({
     });
   },
   render: function() {
+    console.log(this.props);
     return (
       <div>
         { this.state.text }
         <br />
         { this.state.textSync }
+        <br />
+        { this.props.params }
       </div>
     );
   }

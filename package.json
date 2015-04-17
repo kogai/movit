@@ -40,11 +40,13 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
+    "bcrypt": "^0.8.2",
     "es5-shim": "^4.1.0",
     "fibers": "^1.0.5",
     "flux": "^2.0.1",
     "forever": "^0.14.1",
     "hapi": "^8.4.0",
+    "hapi-auth-basic": "^2.0.0",
     "jade": "^1.9.2",
     "keymirror": "^0.1.1",
     "licensify": "^1.1.0",
@@ -55,6 +57,7 @@
     "object-assign": "^2.0.0",
     "react": "^0.13.1",
     "react-async": "^2.1.0",
+    "react-cookie": "^0.1.7",
     "react-router": "^0.13.2",
     "run-sequence": "^1.0.2",
     "should": "^5.2.0",
