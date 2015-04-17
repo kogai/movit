@@ -3,12 +3,13 @@ var Index = require('./Index');
 var Router = require('react-router');
 var renderToStringAsync = require('react-async').renderToStringAsync;
 
-module.exports = function (req, res) {
+module.exports = function (req, reply) {
   Router.run(Index, function (Handler, state) {
-    var params = state.params;
-    params.userId = userId;
-    renderToStringAsync(<Handler params={ params } />, function (err, markup) {
-      res.render('index', { bundle: markup })
+    renderToStringAsync( <Handler />, function ( err, markup ) {
+      if(err){
+        console.log(err);
+      }
+      reply(markup);
     });
   });
 };

@@ -2,6 +2,7 @@ var Hapi = require('hapi');
 var server = new Hapi.Server();
 var path = require('path');
 var logger = require('util/logger').getLogger('app');
+var reactServer = require('asset/react/Server');
 
 server.connection({
   host: 'localhost',
@@ -13,25 +14,15 @@ server.route({
   path: '/{param*}',
   handler: {
     directory: {
-      path: './asset/public'
+      path: './public'
     }
   }
-});
-
-server.views({
-    engines: {
-      jade: require('jade')
-    },
-    path: path.join(__dirname, 'view')
 });
 
 server.route({
   method: 'GET',
   path: '/',
-  handler: function ( req, reply ) {
-    'use strict';
-    reply.view('index');
-  }
+  handler: reactServer
 });
 
 server.start(function(err){

@@ -2,7 +2,6 @@ var gulp = require('gulp');
 var util = require('gulp-util');
 var data = require('gulp-data');
 var newer = require('gulp-newer');
-var jade = require('gulp-jade');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var pngmin = require('gulp-pngmin');
@@ -25,35 +24,6 @@ var config = {
   destReact: './asset/react'
 };
 
-gulp.task('jade', function () {
-  'use strict';
-  var opt = {};
-  if(config.env === 'development'){
-    opt.pretty = true;
-  }
-  return (
-    gulp.src([
-  		config.src + '/jade/!(_)*.jade',
-  		config.src + '/jade/**/!(_)*.jade',
-  		config.src + '/jade/**/**/!(_)*.jade'
-    ])
-    .pipe(
-      data(function (file) {
-        return require(config.src + '/jade/config.json')
-      })
-    )
-    .pipe(newer(config.dest))
-    .pipe(jade(opt))
-    .pipe(
-      gulp.dest(config.dest)
-    )
-    .on('error', function (error) {
-      util.beep();
-      console.log(error);
-    })
-  );
-});
-
 gulp.task('sass', function () {
   'use strict';
   return (
@@ -65,7 +35,7 @@ gulp.task('sass', function () {
     .pipe(
       gulp.dest(config.dest)
     )
-  )
+  );
 });
 
 gulp.task('react-base', function () {
@@ -102,6 +72,7 @@ gulp.task('react-client', function() {
 });
 
 gulp.task('pngmin', function () {
+  'use strict';
   return (
     gulp.src([
       config.src + '/image/*.png',
@@ -115,6 +86,7 @@ gulp.task('pngmin', function () {
 });
 
 gulp.task('copy', function () {
+  'use strict';
   return (
     gulp.src([
       config.src + '/image/*.jpg',
@@ -122,7 +94,7 @@ gulp.task('copy', function () {
       config.src + '/image/**/**/*.jpg',
       config.src + '/image/*.gif',
       config.src + '/image/**/*.gif',
-      config.src + '/image/**/**/*.gif',
+      config.src + '/image/**/**/*.gif'
     ])
     .pipe(gulp.dest(config.dest + '/image'))
   );
@@ -143,11 +115,12 @@ gulp.task('react', function (callback) {
 });
 
 gulp.task('isProduction', function(){
-  config.env = 'production'
+  'use strict';
+  config.env = 'production';
 });
 
 gulp.task('default', [
-  'compile',
+  'compile'
 ], function(){
   'use strict';
   gulp.watch([
@@ -163,7 +136,7 @@ gulp.task('default', [
   gulp.watch([
     config.srcReact + '/*.jsx',
     config.srcReact + '/**/*.jsx',
-    config.srcReact + '/**/**/*.jsx',
+    config.srcReact + '/**/**/*.jsx'
   ], ['react']);
   gulp.watch([
     config.src + '/image/*',
@@ -173,10 +146,9 @@ gulp.task('default', [
 });
 
 gulp.task('compile', [
-  'jade',
   'sass',
   'react',
-  'img',
+  'img'
 ]);
 
 gulp.task('build', [
