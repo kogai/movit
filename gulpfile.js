@@ -14,12 +14,15 @@ var uglifyify = require('uglifyify');
 var babel = require('gulp-babel');
 var source = require('vinyl-source-stream');
 var react = require('gulp-react');
+var runSequence = require('run-sequence');
 
 var config = {
   env: 'development',
   src: './asset',
   dest: './public',
-  destServer: './component'
+  destServer: './component',
+  srcReact: './view',
+  destReact: './asset/react'
 };
 
 gulp.task('jade', function () {
@@ -65,43 +68,37 @@ gulp.task('sass', function () {
   )
 });
 
+gulp.task('react-base', function () {
+  'use strict';
+  return gulp.src([
+      config.srcReact + '/*.jsx',
+      config.srcReact + '/**/*.jsx',
+      config.srcReact + '/**/**/*.jsx'
+    ])
+    .pipe(react())
+    .pipe(gulp.dest(config.destReact + '/'))
+    .on('error', function(err){
+      console.log(err);
+    });
+});
+
 gulp.task('react-client', function() {
+  'use strict';
   var opt = {
     entries: [
-      config.src + '/js/client.jsx',
+      config.destReact + '/client.js'
     ],
-    extensions: ['.jsx'],
+    extensions: ['.js'],
     debug: true
   };
   if(config.env === 'production'){
     opt.debug = false;
   }
   return browserify(opt)
-    .transform(reactify)
-    .transform(babelify)
-    .transform(uglifyify)
-    .bundle()
-    .pipe(
-      source('bundle.js')
-    )
-    .pipe(gulp.dest(config.dest))
-    .on('error', function(err){
-      console.log(err);
-    });
-});
-
-gulp.task('react-server', function () {
-  return gulp.src([
-      config.src + '/js/server.jsx',
-      config.src + '/js/**/*.jsx',
-      config.src + '/js/**/**/*.jsx'
-    ])
-    .pipe(react())
-    .pipe(babel())
-    .pipe(gulp.dest(config.destServer + '/'))
-    .on('error', function(err){
-      console.log(err);
-    });
+  .transform('uglifyify')
+  .bundle()
+  .pipe(source('bundle.js'))
+  .pipe(gulp.dest(config.dest));
 });
 
 gulp.task('pngmin', function () {
@@ -136,10 +133,14 @@ gulp.task('img', [
   'copy'
 ]);
 
-gulp.task('react', [
-  'react-client',
-  'react-server',
-]);
+gulp.task('react', function (callback) {
+  'use strict';
+  runSequence(
+    'react-base',
+    'react-client',
+    callback
+  );
+});
 
 gulp.task('isProduction', function(){
   config.env = 'production'
@@ -160,12 +161,9 @@ gulp.task('default', [
     config.src + '/sass/**/**/*.sass'
   ], ['sass']);
   gulp.watch([
-    config.src + '/js/*.jsx',
-    config.src + '/js/**/*.jsx',
-    config.src + '/js/**/**/*.jsx',
-    config.src + '/js/*.js',
-    config.src + '/js/**/*.js',
-    config.src + '/js/**/**/*.js'
+    config.srcReact + '/*.jsx',
+    config.srcReact + '/**/*.jsx',
+    config.srcReact + '/**/**/*.jsx',
   ], ['react']);
   gulp.watch([
     config.src + '/image/*',
