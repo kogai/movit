@@ -13,9 +13,9 @@ var Main = require('./layout/Main');
 var Page = require('./layout/Page');
 
 var Index = (
-  <Route name="app" path="/" handler={ Html }>
-    <Route name="list" path="/page/:id" handler={ Page } />
+  <Route name="app" path="/" handler={Html}>
     <DefaultRoute handler={ Main }/>
+    <Route name="page" path="/page/:id" handler={Page} />
   </Route>
 );
 

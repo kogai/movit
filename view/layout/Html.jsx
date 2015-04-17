@@ -18,7 +18,7 @@ var Html = React.createClass({
           { this.props.children }
         </body>
         <RouteHandler { ...this.props } />
-        <script src='/bundle.js'></script>
+        <script src='/public/bundle.js'></script>
       </html>
     );
   }

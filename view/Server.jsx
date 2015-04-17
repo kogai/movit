@@ -6,7 +6,10 @@ var Index = require('./Index');
 var isAuthenticated = require('./util/Helper').isAuthenticated;
 
 module.exports = function (request, reply) {
-  Router.run(Index, function (Handler, state) {
+  'use strict';
+  console.log('request.path ', request.path);
+
+  Router.run(Index, '/page/id:150', function (Handler, state) {
 
     state.params.user = request.auth.credentials.name;
     state.params.isAuthenticated = isAuthenticated(request.auth.credentials.name);

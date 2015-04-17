@@ -10,7 +10,7 @@ var reactServer = require('asset/react/Server');
 var users = {
   john: {
     username: 'john',
-    password: '$2a$10$iqJSHD.BGr0E2IxQwYgJmeP3NvhPrXAeLSaGCj6IR/XU5QtjVu5Tm',   // 'secret'
+    password: '$2a$10$iqJSHD.BGr0E2IxQwYgJmeP3NvhPrXAeLSaGCj6IR/XU5QtjVu5Tm', // 'secret'
     name: 'John Doe',
     id: '2133d32a'
   }
@@ -32,30 +32,24 @@ server.connection({
   port: 3000
 });
 
-server.route({
-  method: 'GET',
-  path: '/{param*}',
-  handler: {
-    directory: {
-      path: './public'
-    }
-  }
-});
-
-// server.route({
-//   method: 'GET',
-//   path: '/',
-//   handler: reactServer
-// });
-
 server.register(Basic, function (err) {
   server.auth.strategy('simple', 'basic', { validateFunc: validate });
   server.route({
     method: 'GET',
-    path: '/',
+    path: '/{param*}',
     config: {
       auth: 'simple',
       handler: reactServer
+    }
+  });
+
+  server.route({
+    method: 'GET',
+    path: '/public/{param*}',
+    handler: {
+      directory: {
+        path: './public'
+      }
     }
   });
 

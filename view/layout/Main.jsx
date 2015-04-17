@@ -20,7 +20,7 @@ var Main = React.createClass({
     });
   },
   render: function() {
-    console.log(this.props);
+    console.log('main rendered!');
     return (
       <div>
         { this.state.text }
