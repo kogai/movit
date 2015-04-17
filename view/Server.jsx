@@ -9,7 +9,7 @@ module.exports = function (request, reply) {
   'use strict';
   console.log('request.path ', request.path);
 
-  Router.run(Index, '/page/id:150', function (Handler, state) {
+  Router.run(Index, request.path, function (Handler, state) {
 
     state.params.user = request.auth.credentials.name;
     state.params.isAuthenticated = isAuthenticated(request.auth.credentials.name);

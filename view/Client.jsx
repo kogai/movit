@@ -5,7 +5,7 @@ var cookie = require('react-cookie');
 
 var isAuthenticated = require('./util/Helper').isAuthenticated;
 
-Router.run(Index, function (Handler, state) {
+Router.run(Index, Router.HistoryLocation, function (Handler, state) {
 
   state.params.user = cookie.load('user');
   state.params.isAuthenticated = isAuthenticated(state.params.user);
