@@ -7,12 +7,18 @@ var isAuthenticated = require('./util/Helper').isAuthenticated;
 
 module.exports = function (request, reply) {
   'use strict';
+
   console.log('request.path ', request.path);
+  console.log(request.auth);
+
+  if (!request.auth.isAuthenticated) {
+      // return reply('Authentication failed due to: ' + request.auth.error.message);
+  }
 
   Router.run(Index, request.path, function (Handler, state) {
 
-    state.params.user = request.auth.credentials.name;
-    state.params.isAuthenticated = isAuthenticated(request.auth.credentials.name);
+    // state.params.user = request.auth.credentials.name;
+    // state.params.isAuthenticated = isAuthenticated(request.auth.credentials.name);
 
     renderToStringAsync( <Handler params={ state.params } />, function ( err, markup ) {
       if(err){

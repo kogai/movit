@@ -3,50 +3,49 @@ var server = new Hapi.Server();
 var path = require('path');
 var Bcrypt = require('bcrypt');
 var Basic = require('hapi-auth-basic');
+var Bell = require('bell');
 
 var logger = require('util/logger').getLogger('app');
+var twitter = require('credential').twitter;
 var reactServer = require('asset/react/Server');
-
-var users = {
-  john: {
-    username: 'john',
-    password: '$2a$10$iqJSHD.BGr0E2IxQwYgJmeP3NvhPrXAeLSaGCj6IR/XU5QtjVu5Tm', // 'secret'
-    name: 'John Doe',
-    id: '2133d32a'
-  }
-};
-
-var validate = function (username, password, callback) {
-  var user = users[username];
-  if (!user) {
-    return callback(null, false);
-  }
-
-  Bcrypt.compare(password, user.password, function (err, isValid) {
-    callback(err, isValid, { id: user.id, name: user.name });
-  });
-};
 
 server.connection({
   host: 'localhost',
   port: 3000
 });
 
-server.register(Basic, function (err) {
-  server.auth.strategy('simple', 'basic', { validateFunc: validate });
+server.register(Bell, function(err) {
+  'use strict';
+  if(err){
+    console.log('register-err', err);
+  }
+  server.auth.strategy('twitter', 'bell', {
+    provider: 'twitter',
+    password: 'secret',
+    isSecure: false,
+    clientId: twitter.clientId,
+    clientSecret: twitter.clientSecret
+  });
 
   server.route({
-    method: 'GET',
-    path: '/{param*}',
+    method: '*',
+    path: '/bell/door',
     config: {
-      auth: 'simple',
-      handler: reactServer
-    }
+      auth: 'twitter',
+      // handler: reactServer
+      handler: function(request, reply) {
+        console.log('request.auth-twitter', request.auth);
+        if (!request.auth.isAuthenticated) {
+          // reply('Authentication failed due to: ' + request.auth.error.message);
+        }
+        reply('<pre>' + JSON.stringify(request.auth.credentials, null, 4) + '</pre>');
+      }
+    },
   });
 
   server.route({
     method: 'GET',
-    path: '/public/{param*}',
+    path: '/public/{p*}',
     handler: {
       directory: {
         path: './public'
@@ -54,7 +53,13 @@ server.register(Basic, function (err) {
     }
   });
 
-  server.start(function () {
-      console.log('server running at: ' + server.info.uri);
+  server.route({
+    method: 'GET',
+    path: '/{p*}',
+    handler: reactServer
+  });
+
+  server.start(function() {
+    console.log('server running at: ' + server.info.uri);
   });
 });
