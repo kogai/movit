@@ -10,12 +10,14 @@ var Link = Router.Link;
 
 var Html = require('./layout/Html');
 var Main = require('./layout/Main');
-var Page = require('./layout/Page');
+var Detail = require('./module/Detail');
+var Edit = require('./module/Edit');
 
 var Index = (
   <Route name="app" path='/' handler={ Html }>
     <DefaultRoute name='main' handler={ Main }/>
-    <Route name="page" path="page/:id" handler={ Page } />
+    <Route name="edit" path="edit/:id" handler={ Edit } />
+    <Route name="page" path="page/:id" handler={ Detail } />
   </Route>
 );
 

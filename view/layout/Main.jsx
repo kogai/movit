@@ -42,12 +42,12 @@ var Main = React.createClass({
   },
   render: function() {
     console.log('main rendered!');
-    var List = this.state.list.map(function (data, index) {
+    var Posts = this.state.list.map(function (data, index) {
       return <Card title={ data.title } body={ data.body } key={ index } id={ index }/>
     });
     return (
-      <div className='list'>
-        { List }
+      <div className='post'>
+        { Posts }
       </div>
     );
   }
