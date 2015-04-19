@@ -1,0 +1,20 @@
+.list {
+  margin: $margin;
+}
+
+.list__ele {
+  padding: $margin;
+  margin-bottom: $margin;
+  box-shadow: 0 0 3px $blue-grey-200;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.list__ele__title {
+  margin-bottom: $margin / 2;
+  color: $indigo-500;
+}
+
+.list__ele__body {
+}

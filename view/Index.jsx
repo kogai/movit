@@ -13,9 +13,8 @@ var Main = require('./layout/Main');
 var Page = require('./layout/Page');
 
 var Index = (
-  <Route name="app" path='/' handler={Html}>
+  <Route name="app" path='/' handler={ Html }>
     <DefaultRoute name='main' handler={ Main }/>
-    <Route name="auth" path="auth" handler={ Page } />
     <Route name="page" path="page/:id" handler={ Page } />
   </Route>
 );

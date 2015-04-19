@@ -27,7 +27,7 @@ var config = {
 gulp.task('sass', function () {
   'use strict';
   return (
-    gulp.src('./src/sass/style.sass')
+    gulp.src(config.src + '/sass/style.sass')
     .pipe(sourcemaps.init())
     .pipe(sass())
     .pipe(mifify())
@@ -131,7 +131,10 @@ gulp.task('default', [
   gulp.watch([
     config.src + '/sass/*.sass',
     config.src + '/sass/**/*.sass',
-    config.src + '/sass/**/**/*.sass'
+    config.src + '/sass/**/**/*.sass',
+    config.src + '/sass/*.scss',
+    config.src + '/sass/**/*.scss',
+    config.src + '/sass/**/**/*.scss'
   ], ['sass']);
   gulp.watch([
     config.srcReact + '/*.jsx',
