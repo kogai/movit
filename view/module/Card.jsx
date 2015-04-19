@@ -6,10 +6,10 @@ var Card = React.createClass({
   render: function() {
     var link = '/page/:' + this.props.id;
     return (
-      <div className='list__ele'>
+      <div className='post__ele'>
         <a href={ link }>
-          <div className="list__ele__title">{ this.props.title }</div>
-          <div className="list__ele__body">{ this.props.body }</div>
+          <div className="post__ele__title">{ this.props.title }</div>
+          <div className="post__ele__body">{ this.props.body }</div>
         </a>
       </div>
     );

@@ -1,8 +1,8 @@
-.list {
+.post {
   margin: $margin;
 }
 
-.list__ele {
+.post__ele {
   padding: $margin;
   margin-bottom: $margin;
   box-shadow: 0 0 3px $blue-grey-200;
@@ -11,10 +11,10 @@
   }
 }
 
-.list__ele__title {
+.post__ele__title {
   margin-bottom: $margin / 2;
   color: $indigo-500;
 }
 
-.list__ele__body {
+.post__ele__body {
 }

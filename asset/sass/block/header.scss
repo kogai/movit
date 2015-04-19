@@ -3,3 +3,12 @@
   color: $indigo-50;
   background-color: $indigo-500;
 }
+
+.header__logo--href {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  &:hover {
+    color: $indigo-200;
+  }
+}
