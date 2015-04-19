@@ -16,6 +16,11 @@ server.connection({
   port: 3000
 });
 
+server.views({
+  engines: { jade: require('jade') },
+  path: __dirname + '/view'
+});
+
 server.register(Bell, function(err) {
   'use strict';
   if(err){

@@ -8,23 +8,12 @@ var Html = React.createClass({
 
   render: function() {
     return (
-    <html>
-        <head>
-          <meta charSet='utf-8' />
-          <link rel="stylesheet" href="/public/style.css" />
-          <title>
-            { this.props.title }
-          </title>
-        </head>
-        <body>
-          <Header />
-          <RouteHandler { ...this.props } />
-        </body>
-        <script src='/public/bundle.js'></script>
-      </html>
+      <div>
+        <Header />
+        <RouteHandler { ...this.props } />
+      </div>
     );
   }
-
 });
 
 module.exports = Html;
