@@ -3,18 +3,7 @@ var Router = require('react-router');
 var renderToStringAsync = require('react-async').renderToStringAsync;
 
 var Index = require('./Index');
-/*
-var Index = React.createClass({
-  render: function () {
-    return (
-      <div>
-        <label htmlFor="ddd">ddd</label>
-        <input type="text" />
-      </div>
-    );
-  }
-});
-*/
+
 var isAuthenticated = require('./util/Helper').isAuthenticated;
 
 module.exports = function (request, reply) {
@@ -33,7 +22,7 @@ module.exports = function (request, reply) {
       if(err){
         console.log(err);
       }
-      return reply.view('index', { markup: markup });
+      return reply.view('template', { markup: markup });
     });
   });
 };

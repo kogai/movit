@@ -8,7 +8,6 @@ var Header = React.createClass({
         <h1 className='mui-app-bar-title header__logo'>
           <a href="/" className='header__href'>movit</a>
         </h1>
-        <a href="/edit/:10" className="mui-app-bar-title header__href">Edit</a>
       </div>
     );
   }

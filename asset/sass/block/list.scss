@@ -14,7 +14,17 @@
 .post__ele__title {
   margin-bottom: $margin / 2;
   color: $indigo-500;
+  display: block;
 }
 
 .post__ele__body {
+  display: block;
 }
+
+.post__ele__button {
+  margin-top: $margin;  
+}
+
+/* .post__ele__body--edit {
+  height: 100px;
+} */
