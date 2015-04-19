@@ -7,7 +7,9 @@ var Bell = require('bell');
 
 var logger = require('util/logger').getLogger('app');
 var twitter = require('credential').twitter;
-var reactServer = require('asset/react/Server');
+var cookie = require('credential').cookie;
+
+var route = require('route/');
 
 server.connection({
   host: 'localhost',
@@ -21,45 +23,18 @@ server.register(Bell, function(err) {
   }
   server.auth.strategy('twitter', 'bell', {
     provider: 'twitter',
-    password: 'secret',
-    isSecure: false,
+    password: cookie,
     clientId: twitter.clientId,
-    clientSecret: twitter.clientSecret
+    clientSecret: twitter.clientSecret,
+    isSecure: false
   });
 
-  server.route({
-    method: '*',
-    path: '/bell/door',
-    config: {
-      auth: 'twitter',
-      // handler: reactServer
-      handler: function(request, reply) {
-        console.log('request.auth-twitter', request.auth);
-        if (!request.auth.isAuthenticated) {
-          // reply('Authentication failed due to: ' + request.auth.error.message);
-        }
-        reply('<pre>' + JSON.stringify(request.auth.credentials, null, 4) + '</pre>');
-      }
-    },
-  });
-
-  server.route({
-    method: 'GET',
-    path: '/public/{p*}',
-    handler: {
-      directory: {
-        path: './public'
-      }
-    }
-  });
-
-  server.route({
-    method: 'GET',
-    path: '/{p*}',
-    handler: reactServer
-  });
+  // Route config
+  server.route(route.bell.door);
+  server.route(route.public.wc);
+  server.route(route.wc);
 
   server.start(function() {
-    console.log('server running at: ' + server.info.uri);
+    logger.info('server running at: ' + server.info.uri);
   });
 });

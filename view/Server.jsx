@@ -8,8 +8,8 @@ var isAuthenticated = require('./util/Helper').isAuthenticated;
 module.exports = function (request, reply) {
   'use strict';
 
-  console.log('request.path ', request.path);
-  console.log(request.auth);
+  console.log('request.path\n', request.path);
+  console.log('request.auth\n', request.auth);
 
   if (!request.auth.isAuthenticated) {
       // return reply('Authentication failed due to: ' + request.auth.error.message);
