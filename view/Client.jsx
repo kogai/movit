@@ -8,8 +8,6 @@ var isAuthenticated = require('./util/Helper').isAuthenticated;
 
 Router.run(Index, Router.HistoryLocation, function (Handler, state) {
 
-  state.params.isAuthenticated = isAuthenticated(state.params.user);
-
   var params = state.params;
   React.render(<Handler params={ params } />, document.body);
 });

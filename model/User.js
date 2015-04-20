@@ -3,7 +3,14 @@ var mongodb = require('util/getCredential')('mongodb');
 var db = mongoose.createConnection(mongodb);
 
 var UserSchema = new mongoose.Schema({
-  twitter: Object,
+  twitter: {
+    provider: String,
+    profile: {
+      id: String,
+      usrname: String,
+      displayname: String
+    }
+  },
   sequencialPostId: Number,
   post: [{
     postId: Number,

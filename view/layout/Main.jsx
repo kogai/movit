@@ -43,7 +43,8 @@ var Main = React.createClass({
   render: function() {
     console.log('this.props.params.isAuthenticated', this.props.params.isAuthenticated);
     var Render;
-    if(this.props.params.isAuthenticated){
+    if(this.props.params.isAuthenticated || cookie.load('twitter')){
+      console.log('Render!');
       Render = this.state.list.map(function (data, index) {
         return <Card title={ data.title } body={ data.body } key={ index } id={ index }/>
       });

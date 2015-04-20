@@ -3,8 +3,8 @@ var server = new Hapi.Server();
 
 var path = require('path');
 var Bcrypt = require('bcrypt');
-var Basic = require('hapi-auth-basic');
 var Bell = require('bell');
+var Cookie = require('hapi-auth-cookie');
 
 var logger = require('util/logger').getLogger('app');
 var twitter = require('credential').twitter;
@@ -22,7 +22,7 @@ server.views({
   path: __dirname + '/view'
 });
 
-server.register(Bell, function(err) {
+server.register([Bell, Cookie], function(err) {
   'use strict';
   if(err){
     console.log('register-err', err);
@@ -32,6 +32,14 @@ server.register(Bell, function(err) {
     password: cookie,
     clientId: twitter.clientId,
     clientSecret: twitter.clientSecret,
+    isSecure: false
+  });
+
+  server.auth.strategy('session', 'cookie', {
+    password: cookie,
+    cookie: 'twitter',
+    redirectTo: '/',
+    redirectOnTry: false,
     isSecure: false
   });
 

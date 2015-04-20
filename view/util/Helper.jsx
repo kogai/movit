@@ -7,6 +7,8 @@ Helper.isAuthenticated = function (user) {
   }else{
     result = false;
   }
+  console.log(user);
+  console.log(result);
   return result;
 };
 

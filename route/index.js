@@ -1,14 +1,23 @@
-var request = require('superagent');
-var https = require('https');
+var Cookie = require('hapi-auth-cookie');
+
 var logger = require('util/logger').getLogger('route');
 var reactServer = require('asset/react/Server');
+
+// var User = require('model/User');
 
 module.exports = {
   client: {
     root: {
       method: 'GET',
       path: '/',
-      handler: reactServer
+      config: {
+        auth: {
+          strategy: 'session',
+          mode: 'try'
+        },
+        handler: reactServer
+      }
+
     },
     edit: {
       method: 'GET',
@@ -41,10 +50,15 @@ module.exports = {
         handler: function(request, reply) {
           'use strict';
           console.log('request.auth-twitter', request.auth);
+
+          request.auth.session.clear();
+          request.auth.session.set(request.auth.credentials.profile);
+
           if (!request.auth.isAuthenticated) {
             reply('Authentication failed due to: ' + request.auth.error.message);
           }
-          reply(JSON.stringify(request.auth.credentials, null, 4));
+          return reply.redirect('/');
+          // reply(JSON.stringify(request.auth.credentials, null, 4));
         }
       }
     }
