@@ -40,13 +40,17 @@ server.register([Bell, Cookie], function(err) {
     cookie: 'twitter',
     redirectTo: '/',
     redirectOnTry: false,
-    isSecure: false
+    isSecure: false,
+    isHttpOnly: false
   });
 
   // Route config
   server.route(route.bell.door);
+  server.route(route.bell.regist);
   server.route(route.public.wc);
   server.route(route.client.root);
+  server.route(route.client.edit);
+  server.route(route.client.page);
 
   server.start(function() {
     logger.info('server running at: ' + server.info.uri);

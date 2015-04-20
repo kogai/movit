@@ -4,11 +4,10 @@ var db = mongoose.createConnection(mongodb);
 
 var UserSchema = new mongoose.Schema({
   twitter: {
-    provider: String,
     profile: {
       id: String,
-      usrname: String,
-      displayname: String
+      username: String,
+      displayName: String
     }
   },
   sequencialPostId: Number,
@@ -21,6 +20,7 @@ var UserSchema = new mongoose.Schema({
 
 UserSchema.pre('save', function (next) {
   'use strict';
+  next();
   // var company = this;
   // var query, options, update;
   // if(!company.isNew){
