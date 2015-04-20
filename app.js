@@ -1,5 +1,7 @@
 var Hapi = require('hapi');
 var server = new Hapi.Server();
+var io = require('socket.io');
+var Twitter = require('twitter');
 
 var path = require('path');
 var Bcrypt = require('bcrypt');
@@ -12,10 +14,39 @@ var cookie = require('credential').cookie;
 
 var route = require('route/');
 
+var client = new Twitter({
+  consumer_key: twitter.clientId,
+  consumer_secret: twitter.clientSecret,
+  access_token_key: twitter.accessToken,
+  access_token_secret: twitter.accessTokenSecret
+});
+
+var clientParam = {
+  track: 'iamchawan'
+};
+
+client.stream('statuses/filter', clientParam, function (stream) {
+  'use strict';
+
+  stream.on('data', function(tweet) {
+    logger.info(tweet);
+    if(tweet.text){
+      console.log(tweet.user.screen_name + ':' + tweet.text);
+    }
+  });
+
+  stream.on('error', function(error) {
+    logger.info(error);
+    throw error;
+  });
+});
+
 server.connection({
   host: 'localhost',
   port: 3000
 });
+
+io = io.listen(server.listener);
 
 server.views({
   engines: { jade: require('jade') },
@@ -54,5 +85,9 @@ server.register([Bell, Cookie], function(err) {
 
   server.start(function() {
     logger.info('server running at: ' + server.info.uri);
+  });
+
+  io.on('connection', function (socket) {
+    console.log('socket');
   });
 });
