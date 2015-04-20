@@ -40,16 +40,6 @@ var Main = React.createClass({
       textSync: this.state.text + ' and sync is called, too!'
     });
   },
-  _loginWithTwitter: function (event) {
-    console.log(event.target);
-    request
-    // .post('/api/regist')
-    .post('/bell/door')
-    .withCredentials()
-    .end(function (err, res) {
-      console.log(res);
-    });
-  },
   render: function() {
     console.log('this.props.params.isAuthenticated', this.props.params.isAuthenticated);
     var Render;
@@ -59,8 +49,9 @@ var Main = React.createClass({
       });
     }else{
       Render = <RaisedButton
+        linkButton={ true }
+        href="/bell/door"
         label='Twitterでログインする'
-        onClick={ this._loginWithTwitter }
       />
     }
     return (

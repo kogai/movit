@@ -1,5 +1,6 @@
 var Hapi = require('hapi');
 var server = new Hapi.Server();
+
 var path = require('path');
 var Bcrypt = require('bcrypt');
 var Basic = require('hapi-auth-basic');
@@ -37,8 +38,7 @@ server.register(Bell, function(err) {
   // Route config
   server.route(route.bell.door);
   server.route(route.public.wc);
-  server.route(route.api.regist);
-  server.route(route.wc);
+  server.route(route.client.root);
 
   server.start(function() {
     logger.info('server running at: ' + server.info.uri);
